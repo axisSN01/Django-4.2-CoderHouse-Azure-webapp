@@ -1,0 +1,27 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block seccion %}
+    <h1>Alta Cursos</h1>
+    
+{% endblock %}
+
+
+{% block contenido %}
+
+  
+    <h2>Ingrese el curso</h2>
+
+    <form action="alta_curso" method="POST">
+        {% csrf_token %}
+        <p>Nombre</p>
+        <input type="text" name="nombre" required>
+
+        <p>Comision</p>
+        <input type="number" name="comision" required>
+
+        <input type="submit">
+    </form>
+
+{% endblock %}

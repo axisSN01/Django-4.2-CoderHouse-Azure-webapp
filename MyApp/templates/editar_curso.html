@@ -1,0 +1,27 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block seccion %}
+    <h1>Alta Cursos</h1>
+    
+{% endblock %}
+
+
+{% block contenido %}
+
+  
+    <h2>Ingrese el curso</h2>
+
+    <form action="{% url 'editar_curso' curso.id %}" method="POST">
+        {% csrf_token %}
+        <p>Nombre</p>
+        {{mi_formulario.nombre}}
+
+        <p>Comision</p>
+        {{mi_formulario.comision}}
+
+        <input type="submit" value="Enviar">
+    </form>
+
+{% endblock %}
