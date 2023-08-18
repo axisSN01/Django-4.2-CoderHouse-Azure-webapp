@@ -3,6 +3,10 @@ from MyApp.models import Curso
 from django.template import loader
 from django.http import HttpResponse
 from MyApp.forms import Curso_form
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import authenticate, login
+
+
 # Create your views here.
 
 def inicio(request):
@@ -102,3 +106,53 @@ def editar_curso(request, id):
 
 
     return render(request, "editar_curso.html", {'mi_formulario':mi_formlario, "curso": curso})
+
+
+def login_request(request):
+
+    if request.method == "POST":
+        form = AuthenticationForm(request, data= request.POST)
+
+        if form.is_valid():
+            user = form.cleaned_data.get("username")
+            passw = form.cleaned_data.get("password")
+
+            # si encontro un usuario en la DB retorna el user object, if not None
+            user_obj = authenticate(username= user, password=passw)
+
+            if user_obj:
+                # aca creamos la session de usuario, ( imagino que el broweser recibe un token de sesion)
+                login(request, user_obj)
+                return render(request, "inicio.html", {"mensaje": f"Bienvenido@ {user} !!"})
+            
+            # usuerioa object no exite
+            else:
+                return HttpResponse(f"usuario incorrecto")
+            
+        # por si el formulario no es valido ( no cumple con requeriminetos de seguridad, por ejemplo)
+        else:
+            return HttpResponse(f"FORM INCORRECTO {form}")
+
+
+    # if is not POST, return a clcean form
+    form = AuthenticationForm()
+    return render(request, "login.html", {"form": form})
+
+
+def register(request):
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Nuevo usuario registrado")
+        else:
+            return HttpResponse("formato de nuevo usuario invalido")
+            
+    else:
+        form = UserCreationForm()
+
+        return render(request, "register.html", {"form": form})
+
+    

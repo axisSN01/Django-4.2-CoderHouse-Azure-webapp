@@ -1,0 +1,24 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block seccion %}
+    <h1>Register</h1>
+    
+{% endblock %}
+
+
+{% block contenido %}
+
+  
+    <h2>Ingrese sus datos</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <button class="btn btn-primary">Registrar</button>
+
+    </form>
+
+
+{% endblock %}
