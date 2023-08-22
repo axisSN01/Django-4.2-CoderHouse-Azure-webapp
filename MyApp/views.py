@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from MyApp.models import Curso
+from MyApp.models import *
 from django.template import loader
 from django.http import HttpResponse
 from MyApp.forms import Curso_form
@@ -20,7 +20,6 @@ def cursos(request):
     return HttpResponse(documento)
 
 
-
 def alta_curso(request, nombre , comision):
     curso = Curso(nombre=nombre , comision=comision)
     curso.save()
@@ -28,15 +27,14 @@ def alta_curso(request, nombre , comision):
     return HttpResponse(texto)
 
 
-
-
 def profesores(request):
-    return render( request , "profesores.html")
-
+    profesores = Profesor.objects.all()
+    return render( request, "profesores.html", {"profesores": profesores})
 
 def alumnos(request):
-    return render( request , "alumnos.html")
 
+    alumnos = Alumno.objects.all()
+    return render( request, "alumnos.html", {"alumnos": alumnos})
 
 
 

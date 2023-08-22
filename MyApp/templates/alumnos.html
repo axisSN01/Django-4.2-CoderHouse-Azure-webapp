@@ -11,119 +11,34 @@
 
 
 {% block contenido %}
+  <div class="container text-center">
+    <div class="row row-cols-auto">
+        {% for alumno in alumnos %}
+          <div class="col">
+            <div class="card" style="width: 18rem;">
+                  {% if alumno.is_odd %}
+                      <img src="{% static 'MyApp/assets/img/testimonials-1.828e0935e456.jpg' %}" class="card-img-top">
+                      {% else %}
+                      <img src="{% static 'MyApp/assets/img/testimonials-2.f3c0271e2279.jpg' %}" class="card-img-top">
+                      {% endif %}
+
+              <div class="card-body">
+                <h5 class="card-title">{{ alumno.nombre }}</h5>
+                <p class="card-text">Comision {{ alumno.comision }}</p>
+                <a href="" class="btn btn-primary" style="background-color: blueviolet;">Editar</a>
+                <a href="" class="btn btn-danger">Borrar</a>
 
 
-
-
-<main>
-    <div class="container">
-        <!-- FILA 1-->
-        <div class="row">
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
+              </div>
             </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-        </div>
-
-
-         <!-- FILA 2-->
-         <div class="row">
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-        </div>
-
-         <!-- FILA 3-->
-         <div class="row">
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-            </div>
-        </div>
+          </div>  
+        {% endfor %}
+      </div>
+      <div class="container text-align:center" style="
+      margin-top: 10px;
+      margin-bottom: 10px;
+  " >
+            <a href="" class="btn btn-success">Nuevo Ingreso</a>
+      </div>
     </div>
-</main>
-
-
-
-
-
-{% endblock %}
+    {% endblock %}
