@@ -2,22 +2,30 @@ from django.shortcuts import render
 from MyApp.models import *
 from django.template import loader
 from django.http import HttpResponse
-from MyApp.forms import Curso_form
+from MyApp.forms import Curso_form, UserEditForm
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 def inicio(request):
     return render( request , "padre.html")
 
+# @login_required
+# def cursos(request):
+#     # arreglar para que reenvie el objeto request, asi se mantiene la sesion
+#     cursos = Curso.objects.all()
+#     dicc = {"cursos":cursos}
+#     plantillas = loader.get_template("cursos.html")
+#     documento = plantillas.render(dicc)
+#     return HttpResponse(documento)
+
 def cursos(request):
     cursos = Curso.objects.all()
     dicc = {"cursos":cursos}
-    plantillas = loader.get_template("cursos.html")
-    documento = plantillas.render(dicc)
-    return HttpResponse(documento)
+    return render( request, "cursos.html", {"cursos": cursos})
+
 
 
 def alta_curso(request, nombre , comision):
@@ -26,15 +34,23 @@ def alta_curso(request, nombre , comision):
     texto = f"Se guardo en el BD el Curso: {curso.nombre} Comision:{curso.comision}"
     return HttpResponse(texto)
 
-
+@login_required
 def profesores(request):
     profesores = Profesor.objects.all()
+    avatares = Avatar.objects.filter(user=request.user.id)
     return render( request, "profesores.html", {"profesores": profesores})
 
+@login_required
 def alumnos(request):
-
+    print(request.user.id)
     alumnos = Alumno.objects.all()
-    return render( request, "alumnos.html", {"alumnos": alumnos})
+
+    if request.user.id != None:
+        avatares = Avatar.objects.filter(user=request.user.id)
+        return render( request, "alumnos.html", {"alumnos": alumnos, "url": avatares[0].imagen.url})
+    
+    else:
+        return render( request, "alumnos.html", {"alumnos": alumnos})
 
 
 
@@ -121,7 +137,8 @@ def login_request(request):
             if user_obj:
                 # aca creamos la session de usuario, ( imagino que el broweser recibe un token de sesion)
                 login(request, user_obj)
-                return render(request, "inicio.html", {"mensaje": f"Bienvenido@ {user} !!"})
+                avatares = Avatar.objects.filter(user=request.user.id)
+                return render(request, "inicio.html", {"mensaje": f"Bienvenido@ {user} !!", "url": avatares[0].imagen.url})
             
             # usuerioa object no exite
             else:
@@ -148,9 +165,30 @@ def register(request):
         else:
             return HttpResponse("formato de nuevo usuario invalido")
             
-    else:
+    elif request.method == "GET":
         form = UserCreationForm()
 
         return render(request, "register.html", {"form": form})
 
+
+def editar_perfil(request):
+    usuario = request.user
     
+    if request.method == "POST":
+        miFormulario = UserEditForm(request.POST)
+
+        if miFormulario.is_valid():
+            info = miFormulario.cleaned_data
+            usuario.email = info['email']
+            password = info["password1"]
+            usuario.set_password(password)
+            usuario.save()
+
+            return render(request, "inicio.html")
+
+    else:
+        miFormulario = UserEditForm(initial={"email": usuario.email})
+
+
+    return render(request, "editar_perfil.html", {'miFormulario': miFormulario, "usuario":usuario})
+

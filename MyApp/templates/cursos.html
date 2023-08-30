@@ -17,9 +17,11 @@
                 <td>{{curso.id}}</td>                
                 <td>{{curso.nombre}}</td>
                 <td>{{curso.comision}}</td>
-                <td>
+                <td> 
+                    {# pro algun motivo si usas bloque if, desloguea y no vemos la vista de logeado #}
                     <a href="{% url 'eliminar_curso' curso.id %}" class="btn btn-danger">BORRAR</a>
                     <a href="{% url 'editar_curso' curso.id %}" class="btn btn-info">EDITAR</a>
+                
                 </td>
             {% endfor %}
             </tr>   
