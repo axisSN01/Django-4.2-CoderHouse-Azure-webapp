@@ -18,6 +18,6 @@ urlpatterns = [
     path("register", views.register, name="register"),
     # agregamos una view de tipo clase, se encarga de destruir la sesion. Y borra el token del client browser
     path("logout", LogoutView.as_view(template_name="logout.html"), name="logout"),
-    path("editar_perfil", views.editar_perfil, name='editar_perfil')
+    path("editar_perfil", views.editar_perfil, name='editar_perfil')    
 ]
 

@@ -20,8 +20,15 @@
                 <td>{{profesor.nombre}}</td>
                 <td>{{profesor.apellido}}</td>
                 <td>
+                    {% if request.user.is_authenticated %}     
                     <a href="" class="btn btn-danger">BORRAR</a>
                     <a href="" class="btn btn-info">EDITAR</a>
+                    {% endif %}
+
+                    {% if request.user.is_anonymous %}     
+                    <a href="" class="btn btn-info">+ INFO</a>
+                    {% endif %}
+
                 </td>
             {% endfor %}
             </tr>   

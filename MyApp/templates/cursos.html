@@ -19,15 +19,24 @@
                 <td>{{curso.comision}}</td>
                 <td> 
                     {# pro algun motivo si usas bloque if, desloguea y no vemos la vista de logeado #}
+                    {% if request.user.is_authenticated %}     
                     <a href="{% url 'eliminar_curso' curso.id %}" class="btn btn-danger">BORRAR</a>
                     <a href="{% url 'editar_curso' curso.id %}" class="btn btn-info">EDITAR</a>
+                    {% endif %}
+
+                    {% if request.user.is_anonymous %}     
+                    <a href="" class="btn btn-info">+ INFO</a>
+                    {% endif %}
+
                 
                 </td>
             {% endfor %}
             </tr>   
         </table>
+        {% if request.user.is_authenticated %}     
         <button>
             <a href="alta_curso" class="btn btn-primary">Nuevo Curso</a>
         </button>
+        {% endif %}        
     </div>
 {% endblock %}
