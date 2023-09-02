@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         {% load static %}
+        {% load avatar_tags %}    
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
@@ -34,15 +35,13 @@
                 <a href="{% url 'register' %}" class="btn btn-outline-primary">Register</a>                
                 {% endif %}
 
-                {% if request.user.is_authenticated %}    
-                <p class="font-weight-bold">{{ mensaje }}</p> 
-                <a href="{% url 'login' %}">
-                    <img src="{{ url }}" alt="" class="img-thumbnail" width="100px" height="100px">
-                  </a>           
-                <a href="{% url 'logout' %}" class="btn btn-outline-primary">Logout</a>
+                {% if request.user.is_authenticated %}
+                <p class="font-weight-bold">{{ mensaje }}</p>      
+                <a href="{% avatar user 100 100 %}" class="btn btn-outline-primary">Ver Perfil</a>                    
+                <a href="{% url 'logout' %}" class="btn btn-outline-primary">Logout</a>            
                 {% endif %}
 
-                
+
             </div>
         </nav>
         <!--    -->

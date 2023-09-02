@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.conf import settings # esto esta bien, pero hay que basarse en la filosofia de least privilege access
+from avatar.models import *
 
 # Create your views here.
 
@@ -14,8 +15,8 @@ def inicio(request):
 
     if request.user.is_authenticated:
         print(f"\n{request.user}\n")
-        avatar_url_path = avatar_logic(request)
-        return render( request , "padre.html", {"mensaje":request.user.username ,"url": avatar_url_path})
+
+        return render( request , "padre.html", {"mensaje":request.user.username})
         
     else:
         return render( request , "padre.html")

@@ -24,7 +24,7 @@ class Curso(models.Model):
     profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE, null=True, default="")
     
 
-class Avatar(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE) # esto significa que cuando se borre un alumno se borra el avatar asociado.
-    # no esta bien que quede la data huerfana de los avatar
-    imagen = models.ImageField(upload_to="avatares", null=True, blank=True)
+# class Avatar(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='myapp_avatar_set') # esto significa que cuando se borre un alumno se borra el avatar asociado.
+#     # no esta bien que quede la data huerfana de los avatar
+#     imagen = models.ImageField(upload_to="avatares", null=True, blank=True)

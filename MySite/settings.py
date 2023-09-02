@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-18=@5%m=yy2^%1t_zmjn6!3%mceskla&_nu&agyzg91gb3pz_&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 LOCAL_HOST = ["http://127.0.0.1:8501", "http://localhost:8501", "http://"+LOCAL_IP]
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "MyApp",
+    'avatar',
 ]
 
 
@@ -107,15 +108,6 @@ LOGGING = {
     },
 }
 
-# MIDDLEWARE = [
-#     'django.middleware.security.SecurityMiddleware',
-#     'django.contrib.sessions.middleware.SessionMiddleware',
-#     'django.middleware.common.CommonMiddleware',
-#     'django.middleware.csrf.CsrfViewMiddleware',
-#     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#     'django.contrib.messages.middleware.MessageMiddleware',
-#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-# ]
 
 ####################################
 MIDDLEWARE = [
@@ -130,14 +122,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# STORAGES = {
-#     # ...
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -173,7 +163,7 @@ WSGI_APPLICATION = 'MySite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 
@@ -183,7 +173,7 @@ MEDIA_URL = '/media/' # es el path en la URL
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # es el path LOCAL, donde busca en el server
 DEFAULT_AVATAR_URL = '/media/avatares/default.jpg'
 
-LOGIN_URL = '/login/'
+#LOGIN_URL = '/login/'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
