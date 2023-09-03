@@ -46,7 +46,7 @@ CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",
+    #"whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,65 +55,50 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "MyApp",
     'avatar',
+    'storages',
 ]
 
+DEFAULT_FILE_STORAGE = 'custom_azure.AzureMediaStorage'
+STATICFILES_STORAGE = 'custom_azure.AzureStaticStorage'
+
+STATIC_LOCATION = "static"
+MEDIA_LOCATION = "media"
+
+AZURE_ACCOUNT_NAME = "stacticmedia"
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
 LOOGING_VIEW_DEEP = ""
 
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "filters": {
-        "require_debug_false": {
-            "()": "django.utils.log.RequireDebugFalse",
-        },
-        "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
-        },
-    },
-    "formatters": {
-        "django.server": {
-            "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] {message}",
-            "style": "{",
-        }
-    },
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "filters": ["require_debug_true"],
-            "class": "logging.StreamHandler",
-        },
-        "django.server": {
-            "level": "DEBUG",   
-            "class": "logging.StreamHandler",
-            "formatter": "django.server",
-        },
-        "mail_admins": {
-            "level": "DEBUG",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console", "mail_admins"],
-            "level": "INFO",
-        },
-        "django.server": {
-            "handlers": ["django.server"],
-            "level": "DEBUG",
-            "propagate": False,
-        },
-    },
-}
-
+ 'version': 1,
+ 'disable_existing_loggers': False,
+ 'filters': {
+ 'require_debug_false': {
+ '()': 'django.utils.log.RequireDebugFalse'
+ }
+ },
+ 'handlers': {
+ 'logfile': {
+ 'class': 'logging.handlers.WatchedFileHandler',
+ 'filename': 'myapp.log'
+ }
+ },
+ 'loggers': {
+ 'django': {
+ 'handlers': ['logfile'],
+ 'level': 'DEBUG',
+ 'propagate': False,
+ }
+ }
+ }
 
 ####################################
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 # Add whitenoise middleware after the security middleware                             
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,13 +106,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-STORAGES = {
-    # ...
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -169,7 +147,7 @@ DATABASES = {
 
 
 #para imagenes
-MEDIA_URL = '/media/' # es el path en la URL
+# MEDIA_URL = '/media/' # es el path en la URL
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # es el path LOCAL, donde busca en el server
 
 
@@ -197,7 +175,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'    
 
 TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
@@ -213,7 +191,7 @@ USE_TZ = True
 
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 print(STATICFILES_DIRS)
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -229,6 +207,7 @@ AVATAR_PROVIDERS = (
     # 'avatar.providers.GravatarAvatarProvider',
 )
 
-AVATAR_DEFAULT_URL = '/myApp/default_avatar/default.jpg'
+# Ojo aca, todo es Key sensitive, MyApp no es lo mismo que myApp
+AVATAR_DEFAULT_URL = '/MyApp/default_avatar/default.jpg'
 
 print(AVATAR_DEFAULT_URL)

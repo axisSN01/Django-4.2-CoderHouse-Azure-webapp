@@ -2,8 +2,8 @@ from django.shortcuts import render
 from MyApp.models import *
 from django.template import loader
 from django.http import HttpResponse
-from MyApp.forms import Curso_form, UserEditForm
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from MyApp.forms import Curso_form, UserEditForm, CustomUserCreationForm
+from django.contrib.auth.forms import AuthenticationForm #, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.conf import settings # esto esta bien, pero hay que basarse en la filosofia de least privilege access
@@ -185,16 +185,20 @@ def login_request(request):
 def register(request):
 
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
-
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("Nuevo usuario registrado")
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],
+                                    )
+            login(request, new_user)
+            return render(request, "registro_exitoso.html", {"form": form})
+        
         else:
-            return HttpResponse("formato de nuevo usuario invalido, intente de nuevo")
+            return render(request, "register.html", {"form": form})
             
     elif request.method == "GET":
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
 
         return render(request, "register.html", {"form": form})
 

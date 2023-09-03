@@ -4,7 +4,6 @@
 
 {% block seccion %}
     <h1>Register</h1>
-    
 {% endblock %}
 
 
@@ -16,9 +15,16 @@
         {% csrf_token %}
 
         {{ form.as_p }}
+
         <button class="btn btn-primary">Registrar</button>
-
+        
     </form>
+    
 
+<style>
+    .errorlist {
+        color: red; /* Cambia el color de texto de los mensajes de error a rojo */
+    }
+</style>
 
 {% endblock %}

@@ -1,0 +1,66 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block seccion %}
+    <h1>{{ request.user.username }}</h1>
+{% endblock %}
+
+
+{% block contenido %}
+
+<div id="registro-popup" class="notification">
+    <p>Usuario registrado exitosamente.</p>
+</div>
+
+<style>
+/* Estilos del banner */
+.notification {
+    display: none; /* Inicialmente oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #4CAF50; /* Fondo verde para el banner de éxito */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    animation: fadein 2s, fadeout 2s 4s; /* Animación de entrada y salida */
+}
+
+/* Animación de entrada */
+@keyframes fadein {
+    from { top: -50px; opacity: 0; }
+    to { top: 0; opacity: 1; }
+}
+
+/* Animación de salida después de 4 segundos */
+@keyframes fadeout {
+    from { top: 0; opacity: 1; }
+    to { top: -50px; opacity: 0; }
+}
+</style>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    // Suponiendo que el usuario se registra correctamente y quieres mostrar el banner.
+    $("#registro-popup").show();
+
+    // Espera 4 segundos y luego oculta el banner.
+    setTimeout(function () {
+        $("#registro-popup").hide();
+    }, 3000); // 4000 milisegundos = 4 segundos
+});
+
+    // redirige al usuario a la página de índice.
+    setTimeout(function () {
+        window.location.href = "{% url 'login' %}";
+    }, 3000); // 3000 milisegundos = 3 segundos
+
+
+</script>
+
+{% endblock %}
