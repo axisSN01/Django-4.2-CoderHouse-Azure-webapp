@@ -27,8 +27,8 @@ def cursos(request):
 
     if request.user.is_authenticated:
         print(f"\n{request.user}\n")
-        avatar_url_path = avatar_logic(request)
-        return render( request, "cursos.html", {"cursos": cursos, "url": avatar_url_path})        
+        
+        return render( request, "cursos.html", {"cursos": cursos})        
 
 
     return render( request, "cursos.html", {"cursos": cursos})
@@ -48,8 +48,8 @@ def profesores(request):
     profesores = Profesor.objects.all()
 
     if request.user.is_authenticated:
-        avatar_url_path = avatar_logic(request)
-        return render( request, "profesores.html", {"profesores": profesores, "url": avatar_url_path})
+        
+        return render( request, "profesores.html", {"profesores": profesores})
     
     else:
         return render( request, "profesores.html", {"profesores": profesores})
@@ -62,8 +62,8 @@ def alumnos(request):
     alumnos = Alumno.objects.all()
 
     if request.user.is_authenticated:
-        avatar_url_path = avatar_logic(request)
-        return render( request, "alumnos.html", {"alumnos": alumnos, "url": avatar_url_path})
+        
+        return render( request, "alumnos.html", {"alumnos": alumnos})
     
     else:
         return render( request, "alumnos.html", {"alumnos": alumnos})
@@ -91,8 +91,8 @@ def curso_formulario(request):
 def buscar_curso(request):
 
     if request.user.is_authenticated:
-        avatar_url_path = avatar_logic(request)
-        return render(request, "buscar_curso.html", {'mensaje':request.user.username, "url": avatar_url_path})
+        
+        return render(request, "buscar_curso.html", {'mensaje':request.user.username})
     
 
     return render( request , "buscar_curso.html")
@@ -114,9 +114,9 @@ def eliminar_curso(request, id):
     curso.delete()
 
     cursos = Curso.objects.all()
-    avatar_url_path = avatar_logic(request)
+    
 
-    return render(request, "cursos.html", {"cursos": cursos,'mensaje':request.user.username, "url": avatar_url_path})
+    return render(request, "cursos.html", {"cursos": cursos,'mensaje':request.user.username})
 
 @login_required
 def editar_curso(request, id): 
@@ -139,16 +139,15 @@ def editar_curso(request, id):
     else:
         mi_formlario = Curso_form(initial={'nombre': curso.nombre, 'comision': curso.comision})
 
-    avatar_url_path = avatar_logic(request)
+    
 
-    return render(request, "editar_curso.html", {'mi_formulario':mi_formlario, "curso": curso,'mensaje':request.user.username, "url": avatar_url_path})
+    return render(request, "editar_curso.html", {'mi_formulario':mi_formlario, "curso": curso,'mensaje':request.user.username})
 
 
 def login_request(request):
 
-    if request.method == "GET" and request.user.is_authenticated:
-            avatar_url_path = avatar_logic(request)        
-            return render(request, "inicio.html", {"mensaje": f"{request.user.username} !!", "url": avatar_url_path})
+    if request.method == "GET" and request.user.is_authenticated:    
+            return render(request, "inicio.html", {"mensaje": f"{request.user.username} !!"})
 
 
     elif request.method == "POST":
@@ -165,9 +164,8 @@ def login_request(request):
                 # aca creamos la session de usuario, ( imagino que el broweser recibe un token de sesion)
                 login(request, user_obj)
 
-                avatar_url_path = avatar_logic(request)
-
-                return render(request, "inicio.html", {"mensaje": f"Bienvenido@ {user} !!", "url": avatar_url_path})
+                # pdb.set_trace()
+                return render(request, "inicio.html", {"mensaje": f"Bienvenido@ {user} !!"})
             
             # usuerioa object no exite
             else:
@@ -219,20 +217,4 @@ def editar_perfil(request):
     else:
         miFormulario = UserEditForm(initial={"email": usuario.email})
 
-
-    avatar_url_path = avatar_logic(request)
-
-
-    return render(request, "editar_perfil.html", {'mensaje':request.user.username, 'miFormulario': miFormulario, "usuario":usuario, "url": avatar_url_path})
-
-
-def avatar_logic(request):
-    avatares = Avatar.objects.filter(user=request.user.id)
-
-    if avatares.count() == 0:
-        avatar_url_path = settings.DEFAULT_AVATAR_URL
-
-    else:
-        avatar_url_path = avatares[0].imagen.url
-
-    return avatar_url_path
+    return render(request, "editar_perfil.html", {'mensaje':request.user.username, 'miFormulario': miFormulario, "usuario":usuario})

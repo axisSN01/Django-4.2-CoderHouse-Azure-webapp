@@ -36,9 +36,16 @@
                 {% endif %}
 
                 {% if request.user.is_authenticated %}
-                <p class="font-weight-bold">{{ mensaje }}</p>      
-                <a href="{% avatar user 100 100 %}" class="btn btn-outline-primary">Ver Perfil</a>                    
-                <a href="{% url 'logout' %}" class="btn btn-outline-primary">Logout</a>            
+                    
+                    <div class="text-center">
+                        <a href="{% url 'avatar_change' %}" class="btn btn-outline-primary">Cambiar tu avatar</a>
+                
+                    </div>
+                    <a href="{% url 'login' %}">
+                        {% avatar user 100 100 %}
+                        <p class="text-center">{{ request.user.username }}</p>  
+                    </a>                    
+                    <a href="{% url 'logout' %}" class="btn btn-outline-primary">Logout</a>            
                 {% endif %}
 
 
@@ -67,7 +74,10 @@
 
         {% endblock %}   
 
+        {% block contenido_2     %}
 
+
+        {% endblock %}   
 
 
 

@@ -1,4 +1,5 @@
 {% extends "padre.html" %}
+{% load avatar_tags %}
 
 {% block seccion %}
     <h1>Editar Perfil</h1>
@@ -19,7 +20,13 @@
 
         <input type="submit" value="Enviar">
     </form>
+    {% endblock %}
 
-    <a href="{% url 'avatar_change' %}">Change your avatar</a>
+    {% block contenido_2 %}
+    <div class="text-center">
+        <a href="{% url 'avatar_change' %}" class="btn btn-outline-primary">Change your avatar</a>
+
+    </div>
+
+    {% endblock %}
     
-{% endblock %}

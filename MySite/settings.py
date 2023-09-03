@@ -31,10 +31,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-18=@5%m=yy2^%1t_zmjn6!3%mceskla&_nu&agyzg91gb3pz_&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
-LOCAL_HOST = ["http://127.0.0.1:8501", "http://localhost:8501", "http://"+LOCAL_IP]
+LOCAL_HOST = ["https://127.0.0.1:8501", "http://localhost:8501", "http://"+LOCAL_IP]
 
 print("local IP: ", LOCAL_IP)
 
@@ -171,7 +171,7 @@ DATABASES = {
 #para imagenes
 MEDIA_URL = '/media/' # es el path en la URL
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # es el path LOCAL, donde busca en el server
-DEFAULT_AVATAR_URL = '/media/avatares/default.jpg'
+
 
 #LOGIN_URL = '/login/'
 
@@ -219,3 +219,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AVATAR_PROVIDERS = (
+    # NOTA importante, aca importa el orden de aparicion. ya quwe si esta primero Default, te asigna default aunque el perfil tenga otro avatar 
+    'avatar.providers.PrimaryAvatarProvider', 
+    'avatar.providers.DefaultAvatarProvider',
+    # 'avatar.providers.LibRAvatarProvider',
+    # 'avatar.providers.GravatarAvatarProvider',
+)
+
+AVATAR_DEFAULT_URL = '/myApp/default_avatar/default.jpg'
+
+print(AVATAR_DEFAULT_URL)

@@ -1,5 +1,6 @@
 {% extends "padre.html" %}
- 
+{% load avatar_tags %}
+
 {% block seccion %}
     <h1>Panel de control de usuario</h1>
 {% endblock %}
@@ -11,10 +12,10 @@
 
 <div class="col-4">
         <div class="card" style="width: 18rem;">
-            <img src="{% avatar user 100 100 %}" class="card-img-top" alt="...">
+            {% avatar user 200 200 %}
             <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <h5 class="card-title">Datos de perfil</h5>
+            <p class="card-text">Algun comentario</p>
             <a href="{% url 'editar_perfil' %}" class="btn btn-primary">Editar perfil</a>
             </div>
         </div>
