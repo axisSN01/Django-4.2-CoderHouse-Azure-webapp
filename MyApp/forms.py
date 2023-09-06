@@ -5,14 +5,33 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
+
+
+### NOTE: You could thinks that forms are a ROW for a table, 
+#           and you could think that MODELS are tables for the Databse
+
+
+################## Non authentication forms ##############################
+
+
 class Curso_form(forms.Form):
     nombre =  forms.CharField(max_length=40)
-    comision = forms.IntegerField()
+    comision_id = forms.IntegerField()
+    profesor_id = forms.IntegerField()
 
 class Alumno_form(forms.Form):
     nombre =  forms.CharField(max_length=40)
-    comision = forms.IntegerField()
+    apellido =  forms.CharField(max_length=40)    
+    comision_id = forms.IntegerField()
 
+class Profesor_form(forms.Form):
+    nombre =  forms.CharField(max_length=40)
+    apellido =  forms.CharField(max_length=40)    
+
+
+
+
+############### Authentication forms #############################################
 
 class UserEditForm(UserCreationForm):
     email = forms.EmailField(label="Modificar")
@@ -37,3 +56,5 @@ class CustomUserCreationForm(UserCreationForm):
         label="Password confirmation",
         widget=forms.TextInput,
     )
+
+#####################################################

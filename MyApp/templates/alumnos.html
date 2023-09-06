@@ -1,13 +1,11 @@
 {% extends "padre.html" %}
 
 {% load static %}
-
-
+{% load avatar_tags %}
 
 {% block seccion %}
     <h1>Alumnos</h1>
 {% endblock %}
-
 
 
 {% block contenido %}
@@ -16,18 +14,16 @@
         {% for alumno in alumnos %}
           <div class="col">
             <div class="card" style="width: 18rem;">
-                  {% if alumno.is_odd %}
-                      <img src="{% static 'MyApp/assets/img/testimonials-1.jpg' %}" class="card-img-top">
-                      {% else %}
-                      <img src="{% static 'MyApp/assets/img/testimonials-2.jpg' %}" class="card-img-top">
-                      {% endif %}
 
+              {% avatar alumno.user 200 200 class="card-img-top" %}
               <div class="card-body">
                 <h5 class="card-title">{{ alumno.nombre }}</h5>
-                <p class="card-text">Comision {{ alumno.comision }}</p>
-                <a href="" class="btn btn-primary" style="background-color: blueviolet;">Editar</a>
-                <a href="" class="btn btn-danger">Borrar</a>
+                <p class="card-text">Comision: {{ alumno.comision.id }}</p>
 
+                {% if is_staff %}
+                <a href="admin" class="btn btn-primary" style="background-color: blueviolet;">Editar</a>
+                <a href="admin" class="btn btn-danger">Borrar</a>
+                {% endif %}
 
               </div>
             </div>
@@ -37,8 +33,9 @@
       <div class="container text-align:center" style="
       margin-top: 10px;
       margin-bottom: 10px;
-  " >
-            <a href="" class="btn btn-success">Nuevo Ingreso</a>
+" >       {% if is_staff %}
+            <a href="admin" class="btn btn-success">Nuevo Ingreso</a>
+            {% endif %}            
       </div>
     </div>
     {% endblock %}

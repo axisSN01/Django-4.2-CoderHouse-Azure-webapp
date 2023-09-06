@@ -71,28 +71,29 @@ MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
 LOOGING_VIEW_DEEP = ""
 
-LOGGING = {
- 'version': 1,
- 'disable_existing_loggers': False,
- 'filters': {
- 'require_debug_false': {
- '()': 'django.utils.log.RequireDebugFalse'
- }
- },
- 'handlers': {
- 'logfile': {
- 'class': 'logging.handlers.WatchedFileHandler',
- 'filename': 'myapp.log'
- }
- },
- 'loggers': {
- 'django': {
- 'handlers': ['logfile'],
- 'level': 'DEBUG',
- 'propagate': False,
- }
- }
- }
+if not DEBUG:
+    LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+    'require_debug_false': {
+    '()': 'django.utils.log.RequireDebugFalse'
+    }
+    },
+    'handlers': {
+    'logfile': {
+    'class': 'logging.handlers.WatchedFileHandler',
+    'filename': 'myapp.log'
+    }
+    },
+    'loggers': {
+    'django': {
+    'handlers': ['logfile'],
+    'level': 'DEBUG',
+    'propagate': False,
+    }
+    }
+    }
 
 ####################################
 MIDDLEWARE = [

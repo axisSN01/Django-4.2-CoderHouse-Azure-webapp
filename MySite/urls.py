@@ -20,9 +20,10 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name="admin"),
     path("", include("MyApp.urls"),),
     path('avatar/', include('avatar.urls')),
+    #path("admin/MyApp/alumno/<int:id>/change/", admin.site.urls, name="eliminar_curso"),    
 ]
 
 urlpatterns += static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT)

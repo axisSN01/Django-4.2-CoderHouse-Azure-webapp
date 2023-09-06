@@ -23,15 +23,20 @@ def inicio(request):
 
 
 def cursos(request):
-    cursos = Curso.objects.all()
 
-    if request.user.is_authenticated:
-        print(f"\n{request.user}\n")
+    if request.method == "POST" and request.user.is_authenticated and "Ver mis cursos" in request.POST:
         
-        return render( request, "cursos.html", {"cursos": cursos})        
+        # Buscame el objeto alumno que se corresponde con este ID de usuario y traeme la comision
+        mi_comision_obj = Alumno.objects.get(user__id=request.user.id).comision      
 
-
-    return render( request, "cursos.html", {"cursos": cursos})
+        # traeme todos los cursos que tenga la comision
+        mis_cursos = mi_comision_obj.cursos.all()
+    
+        return render( request, "cursos.html", {"cursos": mis_cursos}) 
+    
+    else:
+        cursos = Curso.objects.all()
+        return render( request, "cursos.html", {"cursos": cursos})
 
 
 @login_required
@@ -58,15 +63,10 @@ def profesores(request):
 
 @login_required
 def alumnos(request):
-    print(f"\n{request.user}\n")
+
     alumnos = Alumno.objects.all()
 
-    if request.user.is_authenticated:
-        
-        return render( request, "alumnos.html", {"alumnos": alumnos})
-    
-    else:
-        return render( request, "alumnos.html", {"alumnos": alumnos})
+    return render( request, "alumnos.html", {"alumnos": alumnos, "is_staff": request.user.is_staff})
 
 
 @login_required
@@ -88,13 +88,6 @@ def curso_formulario(request):
     else:
         return render( request , "padre.html")
 
-
-@login_required
-def mis_cursos(request):
-    if request.method == "POST":
-        return render( request , "buscar_curso.html")
-    
-    return render( request , "buscar_curso.html")
 
 def buscar_curso(request):
     return render( request , "buscar_curso.html")

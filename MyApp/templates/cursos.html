@@ -8,10 +8,10 @@
 <div class="container" style="text-align: center; margin-top: 200px;">
 
     {% if request.user.is_authenticated %}
-        <button>
-            <a href="mis_cursos" class="btn btn-primary">Ver mis cursos</a>
-        </button>        
-
+        <form action="{% url 'cursos' %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" name="Ver mis cursos" value="Ver mis cursos">
+            <input type="submit" name="Ver todos los cursos" value="Ver todos los cursos">
     {% endif %}  
 
         <table class="table table-striped table-hover">
