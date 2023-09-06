@@ -9,7 +9,9 @@ class Profesor(models.Model):
 
 class Alumno(models.Model):
     nombre = models.CharField(max_length=40)
+    apellido = models.CharField(max_length=40, null=True)  
     comision = models.IntegerField()
+    
 
     def is_odd(self):
         if self.id%2 != 0:
@@ -17,9 +19,8 @@ class Alumno(models.Model):
         
         return False
 
-
 class Curso(models.Model):
     nombre = models.CharField(max_length=40)
     comision = models.IntegerField()
-    profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE, null=True, default="")
+    profesor = models.ForeignKey(Profesor, on_delete=models.SET_NULL, null=True, default="")
     

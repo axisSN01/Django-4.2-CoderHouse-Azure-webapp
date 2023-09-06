@@ -6,6 +6,14 @@
 
 {% block contenido %}
 <div class="container" style="text-align: center; margin-top: 200px;">
+
+    {% if request.user.is_authenticated %}
+        <button>
+            <a href="mis_cursos" class="btn btn-primary">Ver mis cursos</a>
+        </button>        
+
+    {% endif %}  
+
         <table class="table table-striped table-hover">
             <tr>
                 <th>id</th>
@@ -18,8 +26,7 @@
                 <td>{{curso.nombre}}</td>
                 <td>{{curso.comision}}</td>
                 <td> 
-                    {# pro algun motivo si usas bloque if, desloguea y no vemos la vista de logeado #}
-                    {% if request.user.is_authenticated %}     
+                    {% if request.user.is_authenticated and request.user.is_staff %}     
                     <a href="{% url 'eliminar_curso' curso.id %}" class="btn btn-danger">BORRAR</a>
                     <a href="{% url 'editar_curso' curso.id %}" class="btn btn-info">EDITAR</a>
                     {% endif %}
@@ -33,7 +40,7 @@
             {% endfor %}
             </tr>   
         </table>
-        {% if request.user.is_authenticated %}     
+        {% if request.user.is_authenticated and request.user.is_staff %}     
         <button>
             <a href="alta_curso" class="btn btn-primary">Nuevo Curso</a>
         </button>

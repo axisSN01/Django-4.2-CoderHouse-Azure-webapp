@@ -72,29 +72,31 @@ def alumnos(request):
 @login_required
 def curso_formulario(request):
 
+    if request.user.is_staff:
+        if request.method == "POST":
+
+            mi_formulario = Curso_form( request.POST )
+
+            if mi_formulario.is_valid():
+                datos = mi_formulario.cleaned_data
+                curso = Curso( nombre=datos['nombre'], comision=datos['comision'])
+                curso.save()
+                return render( request , "formulario.html")
+        
+        return render( request , "formulario.html")
+    
+    else:
+        return render( request , "padre.html")
+
+
+@login_required
+def mis_cursos(request):
     if request.method == "POST":
-
-        mi_formulario = Curso_form( request.POST )
-
-        if mi_formulario.is_valid():
-            datos = mi_formulario.cleaned_data
-            curso = Curso( nombre=datos['nombre'] , comision=datos['comision'])
-            curso.save()
-            return render( request , "formulario.html")
+        return render( request , "buscar_curso.html")
     
-    
-    return render( request , "formulario.html")
-
-
-
+    return render( request , "buscar_curso.html")
 
 def buscar_curso(request):
-
-    if request.user.is_authenticated:
-        
-        return render(request, "buscar_curso.html", {'mensaje':request.user.username})
-    
-
     return render( request , "buscar_curso.html")
 
 

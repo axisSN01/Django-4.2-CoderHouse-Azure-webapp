@@ -30,6 +30,12 @@
                 <a href="{% url 'profesores' %}" class="btn btn-outline-primary">Profesores</a>
                 <a href="{% url 'cursos' %}" class="btn btn-outline-primary">cursos</a>
 
+                {% if request.user.is_authenticated and request.user.is_staff %}
+                    <a href="{% url 'alta_curso' %}" class="btn btn-outline-primary">Alta curso</a>
+                    
+                        
+                {% endif %}
+
                 {% if not request.user.is_authenticated %}                   
                 <a href="{% url 'login' %}" class="btn btn-outline-primary">Login</a>
                 <a href="{% url 'register' %}" class="btn btn-outline-primary">Register</a>                
@@ -37,14 +43,15 @@
 
                 {% if request.user.is_authenticated %}
                     
-                    <div class="text-center">
-                        <a href="{% url 'avatar_change' %}" class="btn btn-outline-primary">Cambiar tu avatar</a>
-                
-                    </div>
-                    <a href="{% url 'login' %}">
+                    <div>
+                    <a href="{% url 'login' %}" class="text-center">
+                        <img src="" alt="">
                         {% avatar user 100 100 %}
-                        <p class="text-center">{{ request.user.username }}</p>  
-                    </a>                    
+                        <p class="text-center">{{ request.user.username }}</p>                        
+                    </a>
+                        <a href="{% url 'avatar_change' %}" class="text-center">Cambiar tu avatar</a>  
+
+                    </div>
                     <a href="{% url 'logout' %}" class="btn btn-outline-primary">Logout</a>            
                 {% endif %}
 
