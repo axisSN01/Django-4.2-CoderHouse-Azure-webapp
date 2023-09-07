@@ -28,7 +28,11 @@ class Profesor_form(forms.Form):
     nombre =  forms.CharField(max_length=40)
     apellido =  forms.CharField(max_length=40)    
 
-
+class AlumnoUserEditForm(forms.Form):
+    nombre =  forms.CharField(max_length=40)
+    apellido =  forms.CharField(max_length=40)      
+    comision_id = forms.IntegerField()
+    user_id = forms.IntegerField()    
 
 
 ############### Authentication forms #############################################

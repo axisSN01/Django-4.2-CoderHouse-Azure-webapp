@@ -3,8 +3,8 @@
 {% load static %}
 {% load avatar_tags %}
 
-{% block seccion %}
-    <h1>Alumnos</h1>
+{% block seccion %}   
+      <h1>Alumnos</h1>      
 {% endblock %}
 
 
@@ -20,9 +20,13 @@
                 <h5 class="card-title">{{ alumno.nombre }}</h5>
                 <p class="card-text">Comision: {{ alumno.comision.id }}</p>
 
-                {% if is_staff %}
-                <a href="admin" class="btn btn-primary" style="background-color: blueviolet;">Editar</a>
-                <a href="admin" class="btn btn-danger">Borrar</a>
+                {% if is_staff %}    
+                <form action="{% url 'editar_alumno_usuario' alumno.id %}" method="POST">
+                  {% csrf_token %}           
+                <input type="submit" class="btn btn-primary" name="{{ alumno.id }}" style="background-color: blueviolet" value="Editar">
+                </form>
+                <a href="borrar_perfil" class="btn btn-danger" onclick="return confirm('Esta seguro de borrar Alumno?')">Borrar</a>
+
                 {% endif %}
 
               </div>
@@ -30,6 +34,26 @@
           </div>  
         {% endfor %}
       </div>
+
+      {% if is_staff %}    
+      <div> 
+        <h4 class="text-center">usuarios sin alumno o sin comision asignada</h4>  
+        <div class="row row-cols-auto">
+          {% for usuario in usuarios_sin_alumno %}
+          <div class="col">
+            <div class="card" style="width: 18rem;">
+
+              {% avatar usuario 200 200 class="card-img-top" %}
+              <div class="card-body">
+                <h5 class="card-title">{{ usuario.username }} {{ usuario.lastname }}</h5>
+              </div>
+            </div>
+          </div>  
+        </div>
+        {% endfor %}
+    </div>
+      {% endif %}
+
       <div class="container text-align:center" style="
       margin-top: 10px;
       margin-bottom: 10px;
@@ -39,3 +63,57 @@
       </div>
     </div>
     {% endblock %}
+
+
+    {# Banner de notificaciones #}
+    {% block contenido_2 %}
+    {% if not mi_alumno_existe %}
+
+        <div id="registro-popup" class="notification">
+            <p>Usted no posee un Alumno asignado a su perfil. Solicitelo al STAFF</p>
+        </div>
+
+        <style>
+        /* Estilos del banner */
+        .notification {
+            display: none; /* Inicialmente oculto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #3abd9f; /* Fondo verde para el banner de éxito */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            animation: fadein 2s, fadeout 2s 4s; /* Animación de entrada y salida */
+        }
+
+        /* Animación de entrada */
+        @keyframes fadein {
+            from { top: -50px; opacity: 0; }
+            to { top: 0; opacity: 1; }
+        }
+
+        /* Animación de salida después de 4 segundos */
+        @keyframes fadeout {
+            from { top: 0; opacity: 1; }
+            to { top: -50px; opacity: 0; }
+        }
+        </style>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+        $(document).ready(function () {
+            // Suponiendo que el usuario se registra correctamente y quieres mostrar el banner.
+            $("#registro-popup").show();
+            // Espera 4 segundos y luego oculta el banner.
+            setTimeout(function () {
+                $("#registro-popup").hide();
+            }, 6000); // 4000 milisegundos = 4 segundos
+        });
+
+        </script>
+        {% endif %}
+{% endblock %}

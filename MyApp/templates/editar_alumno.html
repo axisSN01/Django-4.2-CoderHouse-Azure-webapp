@@ -1,0 +1,29 @@
+{% extends "padre.html" %}
+
+{% block seccion %}
+    <h1>Editar Alumno</h1>
+    
+{% endblock %}
+
+
+{% block contenido %}
+
+  
+    <h2>Alumno en edicion: {{alumno.nombre}}, {{alumno.apellido}} </h2>
+    <form action="{% url 'editar_alumno_usuario' alumno.id %}" method="POST">
+        {% csrf_token %}
+<table>
+    {{miFormulario.as_table}}
+
+</table>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <style>
+        .errorlist {
+            color: red; /* Cambia el color de texto de los mensajes de error a rojo */
+        }
+    </style>
+    {% endblock %}
+    
