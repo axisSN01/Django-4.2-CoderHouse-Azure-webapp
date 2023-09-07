@@ -16,7 +16,6 @@ from django.contrib.auth.password_validation import validate_password
 
 class Curso_form(forms.Form):
     nombre =  forms.CharField(max_length=40)
-    comision_id = forms.IntegerField()
     profesor_id = forms.IntegerField()
 
 class Alumno_form(forms.Form):

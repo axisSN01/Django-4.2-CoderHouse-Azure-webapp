@@ -2,7 +2,7 @@
 Tercera pre entrega curso CoderHouse
 
 ## Showing de la aplicacion (hosting en Azure): 
-### <a href="https://tercera-pre-entrega-ibarra.azurewebsites.net/" style="text-align: center;">tercera-pre-entrega-ibarra.azurewebsites.net</a>
+### <a href="https://app-aburrida.azurewebsites.net/" style="text-align: center;">tercera-pre-entrega-ibarra.azurewebsites.net</a>
 
 ## how to use it?:
 
@@ -48,3 +48,9 @@ The server is configured to run in production, to change it got to settings.py a
     127.0.0.1:8501
 ```
 
+
+TODO: 
+
+ERD
+arreglar el readme
+ver urls.py para ver el status 

@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-18=@5%m=yy2^%1t_zmjn6!3%mceskla&_nu&agyzg91gb3pz_&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 LOCAL_HOST = ["https://127.0.0.1:8501", "http://localhost:8501", "http://"+LOCAL_IP]
@@ -132,6 +132,8 @@ TEMPLATES = [
         },
     },
 ]
+
+print("template DIRS", BASE_DIR/'templates')
 
 WSGI_APPLICATION = 'MySite.wsgi.application'
 

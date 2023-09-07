@@ -135,23 +135,37 @@ def editar_curso(request, id):
 
     if request.method == "POST":
 
-        mi_formlario = Curso_form(request.POST)
+        mi_formulario = Curso_form(request.POST)
 
-        if mi_formlario.is_valid():
-            datos = mi_formlario.cleaned_data
+        if mi_formulario.is_valid():
+            datos = mi_formulario.cleaned_data
+
+            wrong_data = False           
+
+            # Verificar si el id no existe ( Foreign key constrain)
+            if not Profesor.objects.filter(id=datos['profesor_id']).exists():
+
+                mi_formulario.add_error('profesor_id', 'Este ID de profesor No existe. Elija otro.')                
+                wrong_data = True
+
+            if wrong_data:
+                return render(request, "editar_curso.html", {'mi_formulario':mi_formulario, "curso": curso,'mensaje':request.user.username})
+
+
             curso.nombre = datos['nombre']
-            curso.comision = datos['comision']
+            curso.profesor_id = datos['profesor_id']
+
             curso.save()
 
             cursos = Curso.objects.all()    
             return render(request, "cursos.html", {"cursos": cursos})
         
     else:
-        mi_formlario = Curso_form(initial={'nombre': curso.nombre, 'comision': curso.comision})
+        mi_formulario = Curso_form(initial={'nombre': curso.nombre, 
+                                           'profesor_id': curso.profesor_id,                                           
+                                           })
 
-    
-
-    return render(request, "editar_curso.html", {'mi_formulario':mi_formlario, "curso": curso,'mensaje':request.user.username})
+    return render(request, "editar_curso.html", {'mi_formulario':mi_formulario, "curso": curso,'mensaje':request.user.username})
 
 
 def login_request(request):
@@ -250,20 +264,34 @@ def editar_alumno_usuario(request, id):
         miFormulario = AlumnoUserEditForm(request.POST)
 
         if miFormulario.is_valid():
-            info = miFormulario.cleaned_data
+
+
+            ### OJO ACA: este atributo es un DICT y se pasa por referencia (mutable object)
+            ## Entonces cuando se aplica el metodo add_error mas abajo, se modifica tambien info implicitamente.
+            ## por ese motivo conviene usar COPY()
+            info = miFormulario.cleaned_data.copy()
        
+            wrong_data = False
+
             # Verificar si el usuario_id ya está ocupado
-            if Alumno.objects.filter(user__id=info["user_id"]).exists():
+            if Alumno.objects.filter(user__id=info["user_id"]).exists() and alumno.user_id != info["user_id"]:
                 # El usuario_id ya está ocupado
-                miFormulario.add_error('user_id', 'Este ID de usuario ya está ocupado. Elija otro.')
+                miFormulario.add_error('user_id', 'Este ID de usuario ya está ocupado por otro alumno. Elija otro.')
+                wrong_data = True
 
             # Verificar si existe la comision
-            if Comision.objects.filter(id=info["comision_id"]).exists():
-                # El usuario_id ya está ocupado
-
+            if not Comision.objects.filter(id=info["comision_id"]).exists():
                 miFormulario.add_error('comision_id', 'No existe esta comision. Elija una existente.')
-              
-            if not miFormulario.is_valid():
+                wrong_data = True
+
+            # Verificar si el usuario_id no existe ( Foreign key constrain)
+            if not Alumno.objects.filter(user__id=info["user_id"]).exists():
+                # El usuario_id ya está ocupado
+                miFormulario.add_error('user_id', 'Este ID de usuario No existe. Elija otro.')                
+                wrong_data = True
+            
+
+            if wrong_data:
                 return render(request, "editar_alumno.html", {'mensaje':alumno.nombre, 'miFormulario': miFormulario, "alumno":alumno})
 
             else:
@@ -274,7 +302,14 @@ def editar_alumno_usuario(request, id):
                 alumno.comision_id = info["comision_id"]
                 alumno.user_id = info["user_id"]     
                 alumno.save()
-                return render(request, "inicio.html")
+                return render(
+                    request, 
+                    "padre.html",
+                    {
+                        "is_success":True,
+                        "success_message": "Alumno modificado con exito",
+                     }
+                    )
 
     else:
 

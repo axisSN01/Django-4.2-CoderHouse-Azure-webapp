@@ -1,7 +1,7 @@
 {% extends "padre.html" %}
 
 {% block seccion %}
-    <h1>Cursos</h1>    
+    <h1 style="margin-top: 0; padding-top: rem;">Cursos</h1>    
 {% endblock %}
 
 {% block contenido %}
@@ -10,21 +10,24 @@
     {% if request.user.is_authenticated %}
         <form action="{% url 'cursos' %}" method="POST">
             {% csrf_token %}
-            <input type="submit" name="Ver mis cursos" value="Ver mis cursos">
-            <input type="submit" name="Ver todos los cursos" value="Ver todos los cursos">
-    {% endif %}  
-
+            <input type="submit" class="btn btn-primary" name="Ver mis cursos" value="Ver mis cursos">
+            <input type="submit" class="btn btn-primary" name="Ver todos los cursos" value="Ver todos los cursos">
+        {% endif %}  
+        <button>
+            <a href="{% url 'buscar_curso' %}" class="btn btn-info">Buscar curso</a>         
+        </button>
+        
         <table class="table table-striped table-hover">
             <tr>
                 <th>id</th>
                 <th>Nombre</th>
-                <th>Comision</th>
+                <th>Profesor_id</th>
             </tr>
             {% for curso in cursos %}
             <tr>
                 <td>{{curso.id}}</td>                
                 <td>{{curso.nombre}}</td>
-                <td>{{curso.comision}}</td>
+                <td>{{curso.profesor_id}}</td>
                 <td> 
                     {% if request.user.is_authenticated and request.user.is_staff %}     
                     <a href="{% url 'eliminar_curso' curso.id %}" class="btn btn-danger">BORRAR</a>

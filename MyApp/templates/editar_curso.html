@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block seccion %}
-    <h1>Alta Cursos</h1>
+<h1 style="margin-top: 0; padding-top: rem;">Alta Cursos</h1>
     
 {% endblock %}
 
@@ -15,13 +15,13 @@
 
     <form action="{% url 'editar_curso' curso.id %}" method="POST">
         {% csrf_token %}
-        <p>Nombre</p>
-        {{mi_formulario.nombre}}
-
-        <p>Comision</p>
-        {{mi_formulario.comision}}
+            {{mi_formulario.as_p}}
 
         <input type="submit" value="Enviar">
     </form>
-
+    <style>
+        .errorlist {
+            color: red; /* Cambia el color de texto de los mensajes de error a rojo */
+        }
+    </style>
 {% endblock %}
