@@ -7,7 +7,7 @@
 
 ## Schema Entity relational diagram (ERP): 
 
-<img src="https://stacticmedia.blob.core.windows.net/static/MyApp/ERP.svg"  style="height: 400px; width:400px;"/>
+<img src="https://stacticmedia.blob.core.windows.net/static/MyApp/ERP.svg"  style="height: 600px; width:1000px;"/>
 
 
 
