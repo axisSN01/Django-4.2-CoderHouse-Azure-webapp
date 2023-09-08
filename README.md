@@ -58,11 +58,11 @@
 
 1. Clone the repo
 ```sh
-    git clone https://github.com/axisSN01/Tercera-pre-entrega-Ibarra.git
+    git clone https://github.com/axisSN01/Django-CoderHouse.git
 ``` 
 2. Navigate to repo folder
 ```sh
-    cd ./Tercera-pre-entrega-Ibarra
+    cd ./Django-CoderHouse
 
 ```
 
@@ -89,7 +89,7 @@
 ###  useful note: 
 The server is configured to run in production and log into a file (myapp.log), to change it got to settings.py and set:
 ```py
-    DEBUG = False
+    DEBUG = True
 
 ```
 
