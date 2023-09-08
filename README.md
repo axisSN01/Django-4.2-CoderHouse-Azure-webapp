@@ -1,10 +1,29 @@
-# Tercera-pre-entrega-Ibarra
-Tercera pre entrega curso CoderHouse
+# MyApp-Plataforma Cursos - Alexis Ibarra
+
 
 ## Showing de la aplicacion (hosting en Azure): 
 ### <a href="https://app-aburrida.azurewebsites.net/" style="text-align: center;">tercera-pre-entrega-ibarra.azurewebsites.net</a>
 
-## how to use it?:
+
+## Schema Entity relational diagram (ERP): 
+
+<img src="https://stacticmedia.blob.core.windows.net/static/MyApp/ERP.svg"  style="height: 400px; width:400px;"/>
+
+
+
+## How to testing?: 
+| Test | Action                   | Result Expected                                          | Actual Result                                | Check |
+|------|--------------------------|----------------------------------------------------------|----------------------------------------------|-------|
+| 1    | register user and login  | vista de usuario NO STAFF                                | vista de usuario NO STAFF                    | - [x] |
+| 2    | change avatar            | avatar cambiado al perfil                                | avatar cambiado                              | - [x] |
+| 3    | Login as ADMIN or STAFF  | vistas de STAFF ( puede borrar y editar cosas)           | vista de staff (puede borrar y editar cosas) | - [x] |
+| 4    | asignar usuario a un alumno | logeado como STAFF asignar a alumno un perfil de usuario | perfil asignado                              | - [x] |
+| 5    | asignar alumno a usuario  | logeado como STAFF asignar a usuario un alumno id | perfil asignado                              | - [x] |
+
+
+
+
+## how to run it in local?:
 
 1. Clone the repo
 ```sh
@@ -37,7 +56,7 @@ Tercera pre entrega curso CoderHouse
 ```
 
 ###  useful note: 
-The server is configured to run in production, to change it got to settings.py and set:
+The server is configured to run in production and log into a file (myapp.log), to change it got to settings.py and set:
 ```py
     DEBUG = False
 
@@ -49,8 +68,3 @@ The server is configured to run in production, to change it got to settings.py a
 ```
 
 
-TODO: 
-
-ERD
-arreglar el readme
-ver urls.py para ver el status 
