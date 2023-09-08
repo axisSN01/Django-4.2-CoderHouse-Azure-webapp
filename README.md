@@ -11,7 +11,7 @@
 
 ## ScreenCast: 
 
-[ScreenCast-2023-09-08-16-09-97.webm](https://github.com/axisSN01/Django-CoderHouse/assets/50971046/d0c4554b-a48f-43bc-8a0b-bcf2f4123413)
+[ScreenCast-app-aburrida-2023-09-08-16-09-97.webm](https://github.com/axisSN01/Django-CoderHouse/assets/50971046/9a49c5a7-856b-4cc1-a808-20636b9c683c)
 
 
 ## How to testing?: 
