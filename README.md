@@ -21,6 +21,37 @@
 | 5    | asignar alumno a usuario  | logeado como STAFF asignar a usuario un alumno id | perfil asignado                              | - [x] |
 
 
+## Testing sugerido: 
+
+1 - crear usuario no admin 
+
+2 - cambiar el avatar 
+
+3 - ver cursos asignados (/cursos/ "ver mis cursos") (No tendra ningun curso asignado, porque no esta asignado el usuario a un OBJETO ALUMNO)
+
+5 - Ver alumnos (/alumnos) ( muestra BANNER:  "usted no posee un objeto alumno asignado. Solicitar a STAFF" )
+
+7 - Logout 
+
+8 - Login como admin ( perfil STAFF) 
+
+9 - Se habilitan vistas y botones para editar o borrar alumnos, profesores y cursos. 
+
+10 - navegar a alumnos
+
+11- se ven usuario con alumno asignado y usuarios sin alumnos asignados. 
+
+12 - acceder a editar usuario creado en item 1, que no tiene alumno asignado
+
+13 - Asignar alumno y comision a usuario creado en item 1
+
+14 - Logout 
+
+15 - Login con usuario de item 1 y ver cursos asignados (por pertenecer a comision)
+
+16 - fin
+
+
 
 
 ## how to run it in local?:

@@ -33,6 +33,11 @@ class AlumnoUserEditForm(forms.Form):
     comision_id = forms.IntegerField()
     user_id = forms.IntegerField()    
 
+class AsignarAlumnoAUsuarioForm(forms.Form):   
+    nombre =  forms.CharField(max_length=40)
+    apellido =  forms.CharField(max_length=40) 
+    alumno_id = forms.IntegerField()   
+    comision_id = forms.IntegerField()
 
 ############### Authentication forms #############################################
 

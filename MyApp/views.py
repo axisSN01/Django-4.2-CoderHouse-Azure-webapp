@@ -2,7 +2,7 @@ from django.shortcuts import render
 from MyApp.models import *
 from django.template import loader
 from django.http import HttpResponse
-from MyApp.forms import Curso_form, UserEditForm, CustomUserCreationForm, AlumnoUserEditForm
+from MyApp.forms import Curso_form, UserEditForm, CustomUserCreationForm, AlumnoUserEditForm, AsignarAlumnoAUsuarioForm
 from django.contrib.auth.forms import AuthenticationForm #, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -27,7 +27,16 @@ def cursos(request):
     if request.method == "POST" and request.user.is_authenticated and "Ver mis cursos" in request.POST:
         
         # Buscame el objeto alumno que se corresponde con este ID de usuario y traeme la comision
-        mi_comision_obj = Alumno.objects.get(user__id=request.user.id).comision      
+
+        is_alumno_id = Alumno.objects.filter(user__id=request.user.id).exists()
+        
+        if is_alumno_id:
+            ## NOTA IMPORTANTE:  la funcion filter() retorna una LISTA QUERYSET, donde el primer elemento podria ser el objeto buscado.
+            ## la funcion GET torna el OBJETO buscado desempaquetado, por lo tanto puedo acceder a los modelos relacionados. por ejemplo comision
+           mi_comision_obj = Alumno.objects.get(user__id=request.user.id).comision
+        
+        else:
+            return render( request, "cursos.html")
 
         # traeme todos los cursos que tenga la comision
         mis_cursos = mi_comision_obj.cursos.all()
@@ -66,8 +75,10 @@ def alumnos(request):
 
     alumnos = Alumno.objects.all()
 
+    # traigo usuarios con id alumno asignado
     lista_id_usuarios_con_alumno = alumnos.exclude(user_id=None).values_list("user_id")
 
+    # traigo los usuario sin alumno asignado
     usuarios_sin_alumno = User.objects.exclude(id__in=lista_id_usuarios_con_alumno)
 
     # chequeo si el usuario posee Id de alumno
@@ -311,16 +322,125 @@ def editar_alumno_usuario(request, id):
                      }
                     )
 
-    else:
 
-        # Crear un diccionario de valores iniciales basados en la información de la solicitud
-        initial_data = {
-            'nombre': alumno.nombre,
-            'apellido': alumno.apellido,
-            'comision_id': alumno.comision_id,
-            'user_id': alumno.user_id,            
-        }
-        miFormulario = AlumnoUserEditForm(initial=initial_data)
+
+    # Crear un diccionario de valores iniciales basados en la información de la solicitud
+    initial_data = {
+        'nombre': alumno.nombre,
+        'apellido': alumno.apellido,
+        'comision_id': alumno.comision_id,
+        'user_id': alumno.user_id,            
+    }
+    miFormulario = AlumnoUserEditForm(initial=initial_data)
 
 
     return render(request, "editar_alumno.html", {'mensaje':alumno.nombre, 'miFormulario': miFormulario, "alumno":alumno})
+
+
+
+@login_required
+def asignar_alumno_a_usuario(request, id):
+
+    if request.user.is_staff:
+        usuario = User.objects.get(id=id)        
+
+    else:
+        raise PermissionDenied
+
+    if request.method == "POST":
+        miFormulario = AsignarAlumnoAUsuarioForm(request.POST)
+
+        if miFormulario.is_valid():
+
+            ### OJO ACA: este atributo es un DICT y se pasa por referencia (mutable object)
+            ## Entonces cuando se aplica el metodo add_error mas abajo, se modifica tambien info implicitamente.
+            ## por ese motivo conviene usar COPY()
+            info = miFormulario.cleaned_data.copy()
+       
+            wrong_data = False
+
+            # Verificar si el alumno_id ya está ocupado
+            if Alumno.objects.filter(id=info["alumno_id"]).exists():
+                # El alumno id ya está ocupado
+                miFormulario.add_error('alumno_id', 'Este ID de alumno ya está ocupado por otro alumno. Elija otro.')
+                wrong_data = True
+
+            # Verificar si existe la comision
+            if not Comision.objects.filter(id=info["comision_id"]).exists():
+                miFormulario.add_error('comision_id', 'No existe esta comision. Elija una existente.')
+                wrong_data = True
+            
+            # nos se chequea si el usuario id ya existe en tabla alumno, porque ya se llego a esta vista
+
+            if wrong_data:
+                return render(request, "asignar_alumno.html", {'mensaje':usuario.username, 'miFormulario': miFormulario, "usuario":usuario})
+
+            else:
+                # pdb.set_trace()
+                # El alumno_id está disponible, guardar el id alumno
+                # la comision existe y esta disponible
+
+                ### NOTA IMPORTANTE: Django no permite pasar la clase del modelo como argumento de otro modelo. Primero debe ser instanciado. 
+                ## por ejemplo, esto falla: 
+                # nuevo_alumno = Alumno(
+                #     nombre=info['nombre'],
+                #     apellido=info["apellido"],
+                #     comision=Comision.objects.get(id=info["comision_id"]),
+                #     user=usuario,
+                # )
+
+                comision_a_asignar = Comision.objects.get(id=info["comision_id"])
+                
+                nuevo_alumno = Alumno(
+                    nombre=info['nombre'],
+                    apellido=info["apellido"],
+                    comision=comision_a_asignar,
+                    user=usuario,
+                )
+
+                nuevo_alumno.save()
+                return render(
+                    request, 
+                    "padre.html",
+                    {
+                        "is_success":True,
+                        "success_message": f"Alumno asginado con exito a usuario: {usuario.username}",
+                     }
+                    )
+
+
+    # Crear un diccionario de valores iniciales basados en la información de la solicitud
+    initial_data = {
+        'nombre': usuario.first_name,
+        'apellido': usuario.last_name,
+        'comision_id': "",
+        'alumno_id': "",            
+    }
+    miFormulario = AsignarAlumnoAUsuarioForm(initial=initial_data)
+
+
+    return render(request, "asignar_alumno.html", {'mensaje':usuario.username, 'miFormulario': miFormulario, "usuario":usuario})
+
+
+@login_required
+def borrar_alumno(request, id):
+
+    if request.user.is_staff:
+
+        alumno = Alumno.objects.get(id=id)  
+
+        usuario = alumno.user
+
+        alumno.delete()
+        
+        return render(
+                request, 
+                "padre.html",
+                {
+                    "is_success":True,
+                    "success_message": f"Alumno Borrado con exito a usuario: {usuario.username}",
+                    }
+                )
+
+    else:
+        raise PermissionDenied

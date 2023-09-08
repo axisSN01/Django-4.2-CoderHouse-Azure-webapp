@@ -1,0 +1,29 @@
+{% extends "padre.html" %}
+
+{% block seccion %}
+    <h1 style="margin-top: 0; padding-top: rem;">Asignar alumno y comision</h1>
+    
+{% endblock %}
+
+
+{% block contenido %}
+
+  
+    <h2>usuario en edicion: {{usuario.username}}    (id:{{usuario.id}})</h2>
+    <form action="{% url 'asignar_alumno_a_usuario' usuario.id %}" method="POST">
+        {% csrf_token %}
+<table>
+    {{miFormulario.as_table}}
+
+</table>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <style>
+        .errorlist {
+            color: red; /* Cambia el color de texto de los mensajes de error a rojo */
+        }
+    </style>
+    {% endblock %}
+    

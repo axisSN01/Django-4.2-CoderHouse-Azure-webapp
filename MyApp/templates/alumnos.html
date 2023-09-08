@@ -17,15 +17,21 @@
 
               {% avatar alumno.user 200 200 class="card-img-top" %}
               <div class="card-body">
-                <h5 class="card-title">{{ alumno.nombre }}</h5>
+                <h5 class="card-title">{{ alumno.nombre }} {{ alumno.apellido }}</h5>
                 <p class="card-text">Comision: {{ alumno.comision.id }}</p>
 
                 {% if is_staff %}    
-                <form action="{% url 'editar_alumno_usuario' alumno.id %}" method="POST">
-                  {% csrf_token %}           
-                <input type="submit" class="btn btn-primary" name="{{ alumno.id }}" style="background-color: blueviolet" value="Editar">
-                </form>
-                <a href="borrar_perfil" class="btn btn-danger" onclick="return confirm('Esta seguro de borrar Alumno?')">Borrar</a>
+                    <p class="card-text">user_id: {{ alumno.user.id }}</p>
+
+                    <form action="{% url 'editar_alumno_usuario' alumno.id %}" method="POST">
+                      {% csrf_token %}           
+                    <input type="submit" class="btn btn-primary" name="{{ alumno.id }}" style="background-color: blueviolet" value="Editar">
+                    </form>
+
+                    <form action="{% url 'borrar_alumno' alumno.id %}" method="POST">
+                      {% csrf_token %}           
+                      <input type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro de borrar Alumno?')" value="Borrar">
+                    </form>
 
                 {% endif %}
 
@@ -37,7 +43,8 @@
 
       {% if is_staff %}    
       <div> 
-        <h4 class="text-center">usuarios sin alumno o sin comision asignada</h4>  
+        <h4 style="margin-top: 2rem; padding-top: 2rem;">usuarios sin alumno o sin comision asignada</h4>
+  
         <div class="row row-cols-auto">
           {% for usuario in usuarios_sin_alumno %}
           <div class="col">
@@ -46,6 +53,12 @@
               {% avatar usuario 200 200 class="card-img-top" %}
               <div class="card-body">
                 <h5 class="card-title">{{ usuario.username }} {{ usuario.lastname }}</h5>
+
+                <form action="{% url 'asignar_alumno_a_usuario'  usuario.id %}" method="POST">
+                  {% csrf_token %}           
+                    <input type="submit" class="btn btn-primary" name="{{ usuario.id }}" style="background-color: blueviolet" value="Asignar ID de alumno">
+                </form>
+
               </div>
             </div>
           </div>  
@@ -56,8 +69,8 @@
 
       <div class="container text-align:center" style="
       margin-top: 10px;
-      margin-bottom: 10px;
-" >       {% if is_staff %}
+      margin-bottom: 10px;" >       
+      {% if is_staff %}
             <a href="admin" class="btn btn-success">Nuevo Ingreso</a>
             {% endif %}            
       </div>
