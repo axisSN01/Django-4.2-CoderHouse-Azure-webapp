@@ -11,7 +11,7 @@
 
 ## Screen cast: 
 
-[!(renamed webm)](https://stacticmedia.blob.core.windows.net/media/streamlit-app-2023-09-08-16-09-97.mp4)
+[!(renamed webm)](https://stacticmedia.blob.core.windows.net/media/streamlit-app-2023-09-08-16-09-97.webm.mp4)
 
 ## How to testing?: 
 | Test | Action                   | Result Expected                                          | Actual Result                                | Check |
