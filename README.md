@@ -11,7 +11,8 @@
 
 ## Screen cast: 
 
-[!(renamed webm)](https://stacticmedia.blob.core.windows.net/media/streamlit-app-2023-09-08-16-09-97.webm.mp4)
+[streamlit-app-2023-09-08-16-09-97.webm](https://github.com/axisSN01/Django-CoderHouse/assets/50971046/d0c4554b-a48f-43bc-8a0b-bcf2f4123413)
+
 
 ## How to testing?: 
 | Test | Action                   | Result Expected                                          | Actual Result                                | Check |
