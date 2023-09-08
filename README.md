@@ -9,9 +9,9 @@
 
 <img src="https://stacticmedia.blob.core.windows.net/static/MyApp/ERP.svg"  style="height: 600px; width:1000px;"/>
 
-## Screen cast: 
+## ScreenCast: 
 
-[streamlit-app-2023-09-08-16-09-97.webm](https://github.com/axisSN01/Django-CoderHouse/assets/50971046/d0c4554b-a48f-43bc-8a0b-bcf2f4123413)
+[ScreenCast-2023-09-08-16-09-97.webm](https://github.com/axisSN01/Django-CoderHouse/assets/50971046/d0c4554b-a48f-43bc-8a0b-bcf2f4123413)
 
 
 ## How to testing?: 
