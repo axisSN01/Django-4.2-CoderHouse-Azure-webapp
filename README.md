@@ -9,7 +9,9 @@
 
 <img src="https://stacticmedia.blob.core.windows.net/static/MyApp/ERP.svg"  style="height: 600px; width:1000px;"/>
 
+## Screen cast: 
 
+[!(renamed webm)](https://stacticmedia.blob.core.windows.net/media/streamlit-app-2023-09-08-16-09-97.mp4)
 
 ## How to testing?: 
 | Test | Action                   | Result Expected                                          | Actual Result                                | Check |
