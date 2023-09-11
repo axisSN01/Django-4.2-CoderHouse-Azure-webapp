@@ -2,7 +2,7 @@
 
 
 ## Showing de la aplicacion (hosting en Azure): 
-### <a href="https://app-aburrida.azurewebsites.net/" style="text-align: center;">tercera-pre-entrega-ibarra.azurewebsites.net</a>
+### <a href="https://app-aburrida.azurewebsites.net/" style="text-align: center;">app-aburrida.azurewebsites.net</a>
 
 
 ## Schema Entity relational diagram (ERP): 
