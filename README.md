@@ -4,6 +4,9 @@
 ## Showing de la aplicacion (hosting en Azure): 
 ### <a href="https://app-aburrida.azurewebsites.net/" style="text-align: center;">app-aburrida.azurewebsites.net</a>
 
+## Users Hierarchy 
+![Screenshot 2023-09-18 161417](https://github.com/axisSN01/Django-CoderHouse/assets/50971046/86bb918f-d84f-43b3-a39b-c0294fc595d8)
+
 
 ## Schema Entity relational diagram (ERP): 
 
