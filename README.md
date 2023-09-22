@@ -5,13 +5,15 @@
 ### <a href="https://app-aburrida.azurewebsites.net/" style="text-align: center;">app-aburrida.azurewebsites.net</a>
 
 ### Features implemented in this REPO:
-    🖼️   **User avatar app MEDIA**
-    📲   **Android/Iphone Instalable web app (pwa)**
-    👤   **User management**
-    🤖   **Github actions**
-    ♾️   **Azure CI/CD deployment**
-    🧪   **unit testing**
-    ⚠️   **Secrets management**
+
+- [x] 🖼️   **User avatar app MEDIA**
+- [x] 📲   **Android/Iphone Instalable web app (pwa)**
+- [x] 👤   **User management**
+- [x] 🤖   **Github actions**
+- [x] ♾️   **Azure CI/CD deployment**
+- [x] 🧪   **unit testing**
+- [x] ⚠️   **Secrets management**
+
 
 
 ## Users Hierarchy 
