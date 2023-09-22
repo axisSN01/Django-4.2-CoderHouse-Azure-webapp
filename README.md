@@ -116,7 +116,6 @@
    python ./manage.py collectstatic
 ```
 
-
 9. Enjoy the app at Local host 127.0.0.1: 
 ```sh 
     python ./manage.py runserver
