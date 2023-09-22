@@ -14,8 +14,19 @@ from pathlib import Path
 import os
 import socket
 
+
+try:
+    import secrets_file
+    SECRET_KEY = secrets_file.SECRET_KEY
+    ACCOUNT_KEY = secrets_file.ACCOUNT_KEY
+
+except ImportError:
+    print("\n\nSecrets not found in file, so read from ENV\n\n")
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    ACCOUNT_KEY = os.environ.get('ACCOUNT_KEY')
+
 # Get the hostname of the machine
-hostname = os.environ['COMPUTERNAME'] if os.name == 'nt' else os.environ['HOSTNAME']
+hostname = socket.gethostname()
 
 # Get the IP address corresponding to the hostname
 LOCAL_IP = socket.gethostbyname(hostname)
@@ -27,12 +38,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-18=@5%m=yy2^%1t_zmjn6!3%mceskla&_nu&agyzg91gb3pz_&'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = True
 
 LOCAL_HOST = ["https://127.0.0.1:8501", "http://localhost:8501", "http://"+LOCAL_IP]
 
@@ -41,7 +50,6 @@ print("local IP: ", LOCAL_IP)
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else ["*",]
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
-# Application definition
 
 # Application definition
 
@@ -52,14 +60,19 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles', # es gestionado por storages, pero lo necesito activo para correr COLLECSTATIC hacia AZURE.
+    'storages',
     "MyApp",
     'avatar',
-    'storages',
+    'pwa',
+    # Pero no lo puedo dejar activo a 'django.contrib.staticfiles' por cambia la ruta de static ( le agrega un static a STATIC_URL).
 ]
 
-DEFAULT_FILE_STORAGE = 'custom_azure.AzureMediaStorage'
-STATICFILES_STORAGE = 'custom_azure.AzureStaticStorage'
+
+
+
+DEFAULT_FILE_STORAGE = 'azure_media.AzureMediaStorage'
+STATICFILES_STORAGE = 'azure_media.AzureStaticStorage'
 
 STATIC_LOCATION = "static"
 MEDIA_LOCATION = "media"
@@ -69,37 +82,53 @@ AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
 MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
-LOOGING_VIEW_DEEP = ""
 
-if not DEBUG:
-    LOGGING = {
+
+LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-    'require_debug_false': {
-    '()': 'django.utils.log.RequireDebugFalse'
-    }
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} - {asctime} - m:{module} Ps:{process:d} Th:{thread:d}    {message}',
+            'style': '{',
+        },
     },
     'handlers': {
-    'logfile': {
-    'class': 'logging.handlers.WatchedFileHandler',
-    'filename': 'myapp.log'
-    }
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'django.log',
+            'formatter': 'verbose',
+            },
     },
     'loggers': {
-    'django': {
-    'handlers': ['logfile'],
-    'level': 'DEBUG',
-    'propagate': False,
-    }
-    }
-    }
+        'django': {
+            'handlers': ['console'] if DEBUG else ['console', 'file'],
+            'level': 'INFO' if DEBUG else 'INFO',
+        },
+        'MyApp': {
+            'handlers': ['console'] if DEBUG else ['console', 'file'],
+            'level': 'DEBUG',
+        },
+         'avatar': {
+            'handlers': ['console'] if DEBUG else ['console', 'file'],
+            'level': 'DEBUG',
+        }, 
+         'storages': {
+            'handlers': ['console'] if DEBUG else ['console', 'file'],
+            'level': 'DEBUG',
+        },         
+    },
+}
 
 ####################################
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-# Add whitenoise middleware after the security middleware                             
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.security.SecurityMiddleware',                         
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -109,7 +138,7 @@ MIDDLEWARE = [
 ]
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 ######################################
@@ -133,7 +162,7 @@ TEMPLATES = [
     },
 ]
 
-print("template DIRS", BASE_DIR/'templates')
+print("template DIRS: ", BASE_DIR/'templates')
 
 WSGI_APPLICATION = 'MySite.wsgi.application'
 
@@ -148,13 +177,6 @@ DATABASES = {
     }
 }
 
-
-#para imagenes
-# MEDIA_URL = '/media/' # es el path en la URL
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # es el path LOCAL, donde busca en el server
-
-
-#LOGIN_URL = '/login/'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -192,8 +214,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
-print(STATICFILES_DIRS)
+# STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
+# print(STATICFILES_DIRS)
 # STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -201,7 +223,7 @@ print(STATICFILES_DIRS)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# AVATAR APP
 AVATAR_PROVIDERS = (
     # NOTA importante, aca importa el orden de aparicion. ya quwe si esta primero Default, te asigna default aunque el perfil tenga otro avatar 
     'avatar.providers.PrimaryAvatarProvider', 
@@ -213,4 +235,42 @@ AVATAR_PROVIDERS = (
 # Ojo aca, todo es Key sensitive, MyApp no es lo mismo que myApp
 AVATAR_DEFAULT_URL = '/MyApp/default_avatar/default.jpg'
 
-print(AVATAR_DEFAULT_URL)
+print("AVATAR_DEFAULT_URL: ", AVATAR_DEFAULT_URL)
+
+
+####################### DJANGO PWA #####################################################
+# project/settings.py
+
+PWA_APP_NAME = 'My App'
+PWA_APP_DESCRIPTION = "My app description"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = "/"
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = "/"
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': 'https://stacticmedia.blob.core.windows.net/static/images/my_app_icon.png',
+        'sizes': '512x512'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': 'https://stacticmedia.blob.core.windows.net/static/images/my_app_icon.png',
+        'sizes': '512x512'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/images/icons/splash-640x1136.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+##################################################################################
+
+######################## OPEN TELEMERY ######################################################
+#########################################################################################

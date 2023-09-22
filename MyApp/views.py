@@ -16,10 +16,17 @@ def inicio(request):
     if request.user.is_authenticated:
         print(f"\n{request.user}\n")
 
-        return render( request , "padre.html", {"mensaje":request.user.username})
+        return render(
+                    request, 
+                    "padre.html",
+                    {
+                        "is_success":False,
+                        "mensaje":request.user.username,
+                     }
+                    )
         
     else:
-        return render( request , "padre.html")
+        return render( request , "padre.html", {"is_success":False,})
 
 
 def cursos(request):
@@ -121,7 +128,7 @@ def buscar_curso(request):
 
 def buscar(request):
 
-    if request.GET['nombre']:
+    if hasattr(request.GET, 'nombre'):
         nombre = request.GET['nombre']
         cursos = Curso.objects.filter(nombre__icontains = nombre)
         return render( request, "resultado_busqueda.html", {"cursos": cursos})

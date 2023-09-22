@@ -1,14 +1,24 @@
-# MyApp-Plataforma Cursos - Alexis Ibarra
+# MyApp - Plataforma Cursos Dummy - Alexis Ibarra
 
 
-## Showing de la aplicacion (hosting en Azure): 
+## live app (Azure): 
 ### <a href="https://app-aburrida.azurewebsites.net/" style="text-align: center;">app-aburrida.azurewebsites.net</a>
+
+### Features implemented in this REPO:
+    🖼️   **User avatar app MEDIA**
+    📲   **Android/Iphone Instalable web app (pwa)**
+    👤   **User management**
+    🤖   **Github actions**
+    ♾️   **Azure CI/CD deployment**
+    🧪   **unit testing**
+    ⚠️   **Secrets management**
+
 
 ## Users Hierarchy 
 ![Screenshot 2023-09-18 161417](https://github.com/axisSN01/Django-CoderHouse/assets/50971046/86bb918f-d84f-43b3-a39b-c0294fc595d8)
 
 
-## Schema Entity relational diagram (ERP): 
+## Data base Schema Entity relational diagram (ERP): 
 
 <img src="https://stacticmedia.blob.core.windows.net/static/MyApp/ERP.svg"  style="height: 600px; width:1000px;"/>
 
@@ -59,7 +69,6 @@
 
 
 
-
 ## how to run it in local?:
 
 1. Clone the repo
@@ -87,9 +96,30 @@
 ```py
     pip install -r requirements.txt
 ```
-6. type: 
+
+6. Set your storage account config in settings.py: 
+```sh
+    STATIC_LOCATION = "static"
+    MEDIA_LOCATION = "media"
+    AZURE_ACCOUNT_NAME = "stacticmedia"
+```
+
+7. Create the file secrets and set the ACCOUNT_KEY from azure storage account
+```sh
+    echo 'ACCOUNT_KEY = "storage account key"' > secrets_file.py
+    echo 'SECRET_KEY = "django secret key"' >> secrets_file.py
+```
+
+8. run collectstatics to upload all the STATIC files to azure storage account:
+
 ```py
-    python manage.py runserver 8501
+   python ./manage.py collectstatic
+```
+
+
+9. Enjoy the app at Local host 127.0.0.1: 
+```sh 
+    python ./manage.py runserver
 ```
 
 ###  useful note: 
@@ -98,10 +128,4 @@ The server is configured to run in production and log into a file (myapp.log), t
     DEBUG = True
 
 ```
-
-7. Enjoy the app at Local host: 
-```sh 
-    127.0.0.1:8501
-```
-
 
